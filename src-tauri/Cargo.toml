@@ -1,0 +1,38 @@
+[package]
+name = "snor"
+version = "0.1.0"
+description = "A quiet, fast desktop workspace for Claude Code"
+authors = ["Snor contributors"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "snor_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[features]
+default = []
+custom-protocol = ["tauri/custom-protocol"]
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["process", "io-util", "sync", "time", "rt", "macros", "fs"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+base64 = "0.22"
+uuid = { version = "1", features = ["v4"] }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Security", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_UI_Shell"] }
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+opt-level = "s"
+panic = "abort"
+strip = true
